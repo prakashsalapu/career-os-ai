@@ -1,11 +1,11 @@
 import React from 'react';
+import Navbar from './layouts/Navbar';
 
 function App() {
 
   return (
     <div className="App">
-      <h1>CareerOS</h1>
-      
+      <Navbar />
     </div>
   );
 }

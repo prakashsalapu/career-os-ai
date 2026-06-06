@@ -10,9 +10,13 @@ import {
   Menu,
   X,
 } from "lucide-react";
-import "./Navbar.css";
+import "../styles/Navbar.css";
 
-const Navbar = ({ darkMode, onToggleTheme }) => {
+
+
+
+const Navbar = () => {
+  const [darkMode, setDarkMode] = useState(false);
   const [activeLink, setActiveLink] = useState("Home");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -31,7 +35,7 @@ const Navbar = ({ darkMode, onToggleTheme }) => {
     if (targetElement) {
       targetElement.scrollIntoView({ behavior: "smooth" });
     } else {
-      window.location.hash = item.href;
+      window.location.assign(item.href);
     }
   };
 
@@ -70,12 +74,8 @@ const Navbar = ({ darkMode, onToggleTheme }) => {
         <div className="navbar-right">
           <button
             type="button"
-            className={
-              darkMode
-                ? "theme-switch theme-switch--dark"
-                : "theme-switch theme-switch--light"
-            }
-            onClick={onToggleTheme}
+            className={darkMode ? "theme-switch theme-switch--dark" : "theme-switch theme-switch--light"}
+            onClick={() => setDarkMode(!darkMode)}
             aria-label="Toggle light and dark mode"
             aria-pressed={darkMode}
           >
@@ -88,8 +88,8 @@ const Navbar = ({ darkMode, onToggleTheme }) => {
             <span className="theme-switch__slider" aria-hidden="true" />
           </button>
 
-          <button className="btn btn-outline">Login</button>
-          <button className="btn btn-primary">Sign Up</button>
+          <button className="btn btn-outline" type="button" onClick={onLogin}>Login</button>
+          <button className="btn btn-primary" type="button" onClick={onSignUp}>Sign Up</button>
         </div>
       </nav>
 
@@ -111,23 +111,25 @@ const Navbar = ({ darkMode, onToggleTheme }) => {
                 {darkMode ? "Dark Mode" : "Light Mode"}
               </span>
 
-              <button
-                className={
-                  darkMode
-                    ? "theme-switch theme-switch--dark"
-                    : "theme-switch theme-switch--light"
-                }
-                onClick={onToggleTheme}
-              >
-                <span className="theme-switch__option theme-switch__option--sun">
-                  <Sun size={16} />
-                </span>
-                <span className="theme-switch__option theme-switch__option--moon">
-                  <Moon size={16} />
-                </span>
-                <span className="theme-switch__slider" />
-              </button>
-            </div>
+        <button
+          className={
+            darkMode
+              ? "theme-switch theme-switch--dark"
+              : "theme-switch theme-switch--light"
+          }
+          onClick={() => setDarkMode(!darkMode)}
+        >
+          <span className="theme-switch__option theme-switch__option--sun">
+            <Sun size={16} />
+          </span>
+
+          <span className="theme-switch__option theme-switch__option--moon">
+            <Moon size={16} />
+          </span>
+
+          <span className="theme-switch__slider" />
+        </button>
+      </div>
 
             <div className="mobile-nav-links">
               {navItems.map((item, index) => (
@@ -149,13 +151,20 @@ const Navbar = ({ darkMode, onToggleTheme }) => {
               ))}
             </div>
 
-            <div className="mobile-buttons">
-              <button className="btn btn-outline">Login</button>
-              <button className="btn btn-primary">Sign Up</button>
-            </div>
-          </div>
-        </div>
-      )}
+      <div className="mobile-buttons">
+        <button className="btn btn-outline">
+          Login
+        </button>
+
+        <button className="btn btn-primary">
+          Sign Up
+        </button>
+      </div>
+
+    </div>
+  </div>
+)}
+
     </div>
   );
 };

@@ -1,5 +1,5 @@
 import React from "react";
-import "./Hero.css";
+import "../styles/Hero.css";
 
 import {
   FaArrowRight,
@@ -13,7 +13,7 @@ import {
 import { TrendingUp } from "lucide-react";
 import { IoBagHandle } from "react-icons/io5";
 import { MdTrendingUp } from "react-icons/md";
-import heroGirl from "../assets/hero1.png";
+import heroGirl from "/assets/hero1.png";
 
 const Hero = () => {
   return (

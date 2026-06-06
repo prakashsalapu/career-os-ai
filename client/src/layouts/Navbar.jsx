@@ -12,14 +12,10 @@ import {
 } from "lucide-react";
 import "./Navbar.css";
 
-
-
-
-const Navbar = () => {
-  const [darkMode, setDarkMode] = useState(false);
+const Navbar = ({ darkMode, onToggleTheme }) => {
   const [activeLink, setActiveLink] = useState("Home");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  
+
   const navItems = [
     { label: "Home", href: "#home", icon: Home },
     { label: "Features", href: "#features", icon: Sparkles },
@@ -42,7 +38,6 @@ const Navbar = () => {
   return (
     <div className={darkMode ? "navbar-dark" : "navbar-light"}>
       <nav className="navbar-container">
-        {/* Logo Section */}
         <div className="navbar-logo">
           <img src="/logo.png" alt="CareerOS logo" className="logo-img" />
           <h1 className="logo-text">
@@ -50,7 +45,6 @@ const Navbar = () => {
           </h1>
         </div>
 
-        {/* Nav Links */}
         <div className="navbar-links">
           {navItems.map((item, index) => (
             <button
@@ -66,19 +60,22 @@ const Navbar = () => {
           ))}
         </div>
 
-          <button
-  className="mobile-menu-btn"
-  onClick={() => setMobileMenuOpen(true)}
->
-  <Menu size={28} />
-</button>
+        <button
+          className="mobile-menu-btn"
+          onClick={() => setMobileMenuOpen(true)}
+        >
+          <Menu size={28} />
+        </button>
 
-        {/* Right Section */}
         <div className="navbar-right">
           <button
             type="button"
-            className={darkMode ? "theme-switch theme-switch--dark" : "theme-switch theme-switch--light"}
-            onClick={() => setDarkMode(!darkMode)}
+            className={
+              darkMode
+                ? "theme-switch theme-switch--dark"
+                : "theme-switch theme-switch--light"
+            }
+            onClick={onToggleTheme}
             aria-label="Toggle light and dark mode"
             aria-pressed={darkMode}
           >
@@ -96,80 +93,69 @@ const Navbar = () => {
         </div>
       </nav>
 
+      {mobileMenuOpen && (
+        <div className="mobile-menu-overlay">
+          <div className="mobile-menu">
+            <button
+              className="mobile-menu-close"
+              onClick={() => {
+                document.activeElement?.blur();
+                setMobileMenuOpen(false);
+              }}
+            >
+              <X size={24} />
+            </button>
 
-          {mobileMenuOpen && (
-  <div className="mobile-menu-overlay">
-    <div className="mobile-menu">
+            <div className="mobile-theme-section">
+              <span className="mobile-theme-label">
+                {darkMode ? "Dark Mode" : "Light Mode"}
+              </span>
 
-      <button
-        className="mobile-menu-close"
-        onClick={() => {
-          document.activeElement?.blur();
-          setMobileMenuOpen(false);
-        }}
-      >
-        <X size={24} />
-      </button>
+              <button
+                className={
+                  darkMode
+                    ? "theme-switch theme-switch--dark"
+                    : "theme-switch theme-switch--light"
+                }
+                onClick={onToggleTheme}
+              >
+                <span className="theme-switch__option theme-switch__option--sun">
+                  <Sun size={16} />
+                </span>
+                <span className="theme-switch__option theme-switch__option--moon">
+                  <Moon size={16} />
+                </span>
+                <span className="theme-switch__slider" />
+              </button>
+            </div>
 
-      <div className="mobile-theme-section">
-        <span className="mobile-theme-label">
-          {darkMode ? "Dark Mode" : "Light Mode"}
-        </span>
+            <div className="mobile-nav-links">
+              {navItems.map((item, index) => (
+                <button
+                  key={index}
+                  className={
+                    activeLink === item.label
+                      ? "mobile-nav-link active"
+                      : "mobile-nav-link"
+                  }
+                  onClick={() => {
+                    handleNavClick(item);
+                    setMobileMenuOpen(false);
+                  }}
+                >
+                  <item.icon size={18} />
+                  {item.label}
+                </button>
+              ))}
+            </div>
 
-        <button
-          className={
-            darkMode
-              ? "theme-switch theme-switch--dark"
-              : "theme-switch theme-switch--light"
-          }
-          onClick={() => setDarkMode(!darkMode)}
-        >
-          <span className="theme-switch__option theme-switch__option--sun">
-            <Sun size={16} />
-          </span>
-
-          <span className="theme-switch__option theme-switch__option--moon">
-            <Moon size={16} />
-          </span>
-
-          <span className="theme-switch__slider" />
-        </button>
-      </div>
-
-      <div className="mobile-nav-links">
-        {navItems.map((item, index) => (
-          <button
-            key={index}
-            className={
-              activeLink === item.label
-                ? "mobile-nav-link active"
-                : "mobile-nav-link"
-            }
-            onClick={() => {
-              handleNavClick(item);
-              setMobileMenuOpen(false);
-            }}
-          >
-            <item.icon size={18} />
-            {item.label}
-          </button>
-        ))}
-      </div>
-
-      <div className="mobile-buttons">
-        <button className="btn btn-outline">
-          Login
-        </button>
-
-        <button className="btn btn-primary">
-          Sign Up
-        </button>
-      </div>
-
-    </div>
-  </div>
-)}
-
+            <div className="mobile-buttons">
+              <button className="btn btn-outline">Login</button>
+              <button className="btn btn-primary">Sign Up</button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

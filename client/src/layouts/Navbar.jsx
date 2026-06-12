@@ -18,7 +18,7 @@ import "../styles/Navbar.css";
 const Navbar = ({ darkMode, onToggleTheme, onLogin, onSignUp }) => {
   const [activeLink, setActiveLink] = useState("Home");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  
+
   const navItems = [
     { label: "Home", href: "#home", icon: Home },
     { label: "Features", href: "#features", icon: Sparkles },
@@ -41,7 +41,6 @@ const Navbar = ({ darkMode, onToggleTheme, onLogin, onSignUp }) => {
   return (
     <div className={darkMode ? "navbar-dark" : "navbar-light"}>
       <nav className="navbar-container">
-        {/* Logo Section */}
         <div className="navbar-logo">
           <img src="/logo.png" alt="CareerOS logo" className="logo-img" />
           <h1 className="logo-text">
@@ -49,7 +48,6 @@ const Navbar = ({ darkMode, onToggleTheme, onLogin, onSignUp }) => {
           </h1>
         </div>
 
-        {/* Nav Links */}
         <div className="navbar-links">
           {navItems.map((item, index) => (
             <button
@@ -65,14 +63,13 @@ const Navbar = ({ darkMode, onToggleTheme, onLogin, onSignUp }) => {
           ))}
         </div>
 
-          <button
-  className="mobile-menu-btn"
-  onClick={() => setMobileMenuOpen(true)}
->
-  <Menu size={28} />
-</button>
+        <button
+          className="mobile-menu-btn"
+          onClick={() => setMobileMenuOpen(true)}
+        >
+          <Menu size={28} />
+        </button>
 
-        {/* Right Section */}
         <div className="navbar-right">
           <button
             type="button"
@@ -95,25 +92,23 @@ const Navbar = ({ darkMode, onToggleTheme, onLogin, onSignUp }) => {
         </div>
       </nav>
 
+      {mobileMenuOpen && (
+        <div className="mobile-menu-overlay">
+          <div className="mobile-menu">
+            <button
+              className="mobile-menu-close"
+              onClick={() => {
+                document.activeElement?.blur();
+                setMobileMenuOpen(false);
+              }}
+            >
+              <X size={24} />
+            </button>
 
-          {mobileMenuOpen && (
-  <div className="mobile-menu-overlay">
-    <div className="mobile-menu">
-
-      <button
-        className="mobile-menu-close"
-        onClick={() => {
-          document.activeElement?.blur();
-          setMobileMenuOpen(false);
-        }}
-      >
-        <X size={24} />
-      </button>
-
-      <div className="mobile-theme-section">
-        <span className="mobile-theme-label">
-          {darkMode ? "Dark Mode" : "Light Mode"}
-        </span>
+            <div className="mobile-theme-section">
+              <span className="mobile-theme-label">
+                {darkMode ? "Dark Mode" : "Light Mode"}
+              </span>
 
         <button
           className={
@@ -135,25 +130,25 @@ const Navbar = ({ darkMode, onToggleTheme, onLogin, onSignUp }) => {
         </button>
       </div>
 
-      <div className="mobile-nav-links">
-        {navItems.map((item, index) => (
-          <button
-            key={index}
-            className={
-              activeLink === item.label
-                ? "mobile-nav-link active"
-                : "mobile-nav-link"
-            }
-            onClick={() => {
-              handleNavClick(item);
-              setMobileMenuOpen(false);
-            }}
-          >
-            <item.icon size={18} />
-            {item.label}
-          </button>
-        ))}
-      </div>
+            <div className="mobile-nav-links">
+              {navItems.map((item, index) => (
+                <button
+                  key={index}
+                  className={
+                    activeLink === item.label
+                      ? "mobile-nav-link active"
+                      : "mobile-nav-link"
+                  }
+                  onClick={() => {
+                    handleNavClick(item);
+                    setMobileMenuOpen(false);
+                  }}
+                >
+                  <item.icon size={18} />
+                  {item.label}
+                </button>
+              ))}
+            </div>
 
       <div className="mobile-buttons">
         <button className="btn btn-outline" type="button" onClick={() => { onLogin?.(); setMobileMenuOpen(false); }}>

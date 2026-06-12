@@ -1,5 +1,12 @@
 /* Navbar Container */
 .navbar-light {
+  background-color: #ffffff;
+  transition: background-color 0.3s ease;
+}
+
+.navbar-dark {
+  background: linear-gradient(180deg, #0f172a 0%, #111c34 100%);
+  transition: background-color 0.3s ease;
   position: fixed;
   top: 0;
   left: 0;

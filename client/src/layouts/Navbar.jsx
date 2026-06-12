@@ -15,8 +15,7 @@ import "../styles/Navbar.css";
 
 
 
-const Navbar = () => {
-  const [darkMode, setDarkMode] = useState(false);
+const Navbar = ({ darkMode, onToggleTheme, onLogin, onSignUp }) => {
   const [activeLink, setActiveLink] = useState("Home");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -75,7 +74,7 @@ const Navbar = () => {
           <button
             type="button"
             className={darkMode ? "theme-switch theme-switch--dark" : "theme-switch theme-switch--light"}
-            onClick={() => setDarkMode(!darkMode)}
+            onClick={onToggleTheme}
             aria-label="Toggle light and dark mode"
             aria-pressed={darkMode}
           >
@@ -117,7 +116,7 @@ const Navbar = () => {
               ? "theme-switch theme-switch--dark"
               : "theme-switch theme-switch--light"
           }
-          onClick={() => setDarkMode(!darkMode)}
+          onClick={onToggleTheme}
         >
           <span className="theme-switch__option theme-switch__option--sun">
             <Sun size={16} />
@@ -152,11 +151,11 @@ const Navbar = () => {
             </div>
 
       <div className="mobile-buttons">
-        <button className="btn btn-outline">
+        <button className="btn btn-outline" type="button" onClick={() => { onLogin?.(); setMobileMenuOpen(false); }}>
           Login
         </button>
 
-        <button className="btn btn-primary">
+        <button className="btn btn-primary" type="button" onClick={() => { onSignUp?.(); setMobileMenuOpen(false); }}>
           Sign Up
         </button>
       </div>

@@ -1,40 +1,23 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Navbar from './layouts/Navbar';
-import Dashboard from './pages/Dashboard';
+import Hero from './layouts/Hero';
+import FAQ from './layouts/Faq';
+import Footer from './layouts/Footer';
 
 function App() {
-  const [showDashboard, setShowDashboard] = useState(false);
-  const [darkMode, setDarkMode] = useState(true);
+  const [darkMode, setDarkMode] = useState(false);
 
-  const handleLogin = () => {
-    setShowDashboard(true);
-  };
-
-  const toggleTheme = () => {
-    setDarkMode((prev) => !prev);
-  };
+  useEffect(() => {
+    document.documentElement.classList.toggle('theme-dark', darkMode);
+    document.documentElement.classList.toggle('theme-light', !darkMode);
+  }, [darkMode]);
 
   return (
-    <div className={darkMode ? 'app app--dark' : 'app app--light'}>
-      {!showDashboard && (
-        <Navbar darkMode={darkMode} onToggleTheme={toggleTheme} onLogin={handleLogin} onSignUp={handleLogin} />
-      )}
-      {showDashboard ? (
-        <Dashboard darkMode={darkMode} onToggleTheme={toggleTheme} />
-      ) : (
-        <main className="landing-screen">
-          <section className="landing-card">
-            <p className="landing-eyebrow">CareerOS</p>
-            <h1>Welcome to your career command center</h1>
-            <p className="landing-copy">
-              Click login to open the dashboard and start tracking your goals.
-            </p>
-            <button className="btn btn-primary landing-button" type="button" onClick={handleLogin}>
-              Go to dashboard
-            </button>
-          </section>
-        </main>
-      )}
+    <div className="App">
+      <Navbar darkMode={darkMode} onToggleTheme={() => setDarkMode((value) => !value)} />
+      <Hero />
+      <FAQ />
+      <Footer />
     </div>
   );
 }

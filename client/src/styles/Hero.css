@@ -291,54 +291,6 @@
   right: 40px;
 }
 
-.features-wrapper {
-  max-width: 1320px;
-  margin: 72px auto 0;
-  background: var(--feature-bg);
-  border-radius: 28px;
-  padding: 34px;
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.08);
-}
-
-.feature-card {
-  display: flex;
-  align-items: flex-start;
-  gap: 16px;
-  padding: 0 24px;
-}
-
-.feature-card:not(:last-child) {
-  border-right: 1px solid var(--feature-border);
-}
-
-.feature-icon {
-  width: 66px;
-  height: 66px;
-  min-width: 66px;
-  background: var(--feature-icon-bg);
-  border-radius: 18px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--primary);
-  font-size: 26px;
-}
-
-.feature-card h4 {
-  font-size: 22px;
-  color: var(--text);
-  margin-bottom: 10px;
-  font-weight: 700;
-}
-
-.feature-card p {
-  color: var(--muted);
-  line-height: 1.8;
-  font-size: 15px;
-}
-
 @media (max-width: 1200px) {
   .hero-title {
     font-size: 52px;
@@ -394,9 +346,6 @@
     margin-right: auto;
   }
 
-  .features-wrapper {
-    grid-template-columns: 1fr;
-  }
 
 
 /* Subtle glowing effects for dark mode */

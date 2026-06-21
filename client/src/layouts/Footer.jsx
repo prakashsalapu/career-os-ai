@@ -10,14 +10,21 @@ import {
 import "../styles/Footer.css";
 
 const Footer = () => {
+  const socialLinks = [
+    { icon: FaFacebookF, label: "Facebook", url: "#" },
+    { icon: FaLinkedinIn, label: "LinkedIn", url: "#" },
+    { icon: FaInstagram, label: "Instagram", url: "#" },
+    { icon: FaYoutube, label: "YouTube", url: "#" },
+    { icon: FaTwitter, label: "Twitter", url: "#" },
+  ];
+
   return (
     <footer className="footer">
       <div className="footer-container">
         <div className="footer-top">
-
           <div className="footer-brand">
             <div className="logo-wrapper">
-              <FaGraduationCap className="logo-icon" />
+              <FaGraduationCap className="logo-icon" aria-hidden="true" />
               <h2>careerosn</h2>
             </div>
 
@@ -27,19 +34,28 @@ const Footer = () => {
               Your journey to success starts here.
             </p>
 
-            <div className="social-icons">
-              <a href="#"><FaFacebookF /></a>
-              <a href="#"><FaLinkedinIn /></a>
-              <a href="#"><FaInstagram /></a>
-              <a href="#"><FaYoutube /></a>
-              <a href="#"><FaTwitter /></a>
+            <div className="social-icons" aria-label="Social media links">
+              {socialLinks.map((social, index) => {
+                const Icon = social.icon;
+                return (
+                  <a
+                    key={index}
+                    href={social.url}
+                    aria-label={social.label}
+                    title={social.label}
+                    rel="noopener noreferrer"
+                  >
+                    <Icon />
+                  </a>
+                );
+              })}
             </div>
           </div>
 
           <div className="footer-links">
             <div className="footer-column">
               <h3>PRODUCTS</h3>
-              <span className="footer-line"></span>
+              <span className="footer-line" aria-hidden="true"></span>
 
               <a href="/">Components</a>
               <a href="/">Templates</a>
@@ -49,7 +65,7 @@ const Footer = () => {
 
             <div className="footer-column">
               <h3>RESOURCES</h3>
-              <span className="footer-line"></span>
+              <span className="footer-line" aria-hidden="true"></span>
 
               <a href="/">Blog</a>
               <a href="/">Guides</a>
@@ -60,7 +76,7 @@ const Footer = () => {
 
             <div className="footer-column">
               <h3>COMPANY</h3>
-              <span className="footer-line"></span>
+              <span className="footer-line" aria-hidden="true"></span>
 
               <a href="/">About Us</a>
               <a href="/">Our Mission</a>
@@ -82,7 +98,7 @@ const Footer = () => {
           <p>© 2025 careerosn. All rights reserved.</p>
 
           <p>
-            Made with <span className="heart">💜</span> for your success.
+            Made with <span className="heart" aria-label="heart">💜</span> for your success.
           </p>
         </div>
       </div>

@@ -5,15 +5,21 @@ import FAQ from './layouts/Faq';
 import Footer from './layouts/Footer';
 
 function App() {
-  const [darkMode, setDarkMode] = useState(false);
+  const [darkMode, setDarkMode] = useState(() => {
+    if (typeof window === 'undefined') return false;
+    const storedTheme = localStorage.getItem('careerOS-theme');
+    if (storedTheme === 'dark') return true;
+    if (storedTheme === 'light') return false;
+    return window.matchMedia('(prefers-color-scheme: dark)').matches;
+  });
 
   useEffect(() => {
-    document.documentElement.classList.toggle('theme-dark', darkMode);
-    document.documentElement.classList.toggle('theme-light', !darkMode);
+    document.documentElement.classList.toggle('dark', darkMode);
+    localStorage.setItem('careerOS-theme', darkMode ? 'dark' : 'light');
   }, [darkMode]);
 
   return (
-    <div className="App">
+    <div className="min-h-screen bg-white dark:bg-slate-950 text-slate-900 dark:text-white transition-colors duration-300">
       <Navbar darkMode={darkMode} onToggleTheme={() => setDarkMode((value) => !value)} />
       <Hero />
       <FAQ />

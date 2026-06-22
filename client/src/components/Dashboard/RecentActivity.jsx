@@ -39,7 +39,7 @@ const RecentActivity = () => {
       </div>
 
       <div className="timeline">
-        {activities.map((activity, index) => {
+        {activities.map((activity) => {
           const Icon = activity.icon;
           return (
             <div key={activity.title} className="timeline-item">

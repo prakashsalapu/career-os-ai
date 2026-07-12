@@ -143,9 +143,9 @@ function FAQ() {
 
             <div className="flex-shrink-0 flex flex-col items-center gap-3">
               <button className="btn bg-white text-blue-600 hover:bg-slate-100 font-semibold px-8">
-                Start Free Trial →
+                Get Started →
               </button>
-              <span className="text-white/80 text-sm">14-day • No card required</span>
+              
             </div>
           </div>
         </div>

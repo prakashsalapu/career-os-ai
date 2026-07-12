@@ -1,200 +1,164 @@
 import React, { useState } from "react";
-import {
-  Sun,
-  Moon,
-  Home,
-  Sparkles,
-  Info,
-  HelpCircle,
-  Mail,
-  Menu,
-  X,
-} from "lucide-react";
+import { Menu, X } from "lucide-react";
 
-const Navbar = ({ darkMode, onToggleTheme, onLogin, onSignUp }) => {
+const navItems = [
+  { label: "Home", href: "#home" },
+  { label: "About", href: "#about" },
+  { label: "Features", href: "#features" },
+  { label: "Contact", href: "#contact" },
+];
+
+const Navbar = ({ onLogin, onSignUp }) => {
   const [activeLink, setActiveLink] = useState("Home");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  const navItems = [
-    { label: "Home", href: "#home", icon: Home },
-    { label: "Features", href: "#features", icon: Sparkles },
-    { label: "About", href: "#about", icon: Info },
-    { label: "FAQ", href: "#faq", icon: HelpCircle },
-    { label: "Contact", href: "#contact", icon: Mail },
-  ];
-
   const handleNavClick = (item) => {
     setActiveLink(item.label);
-    const targetId = item.href.replace("#", "");
-    const targetElement = document.getElementById(targetId);
+    const targetElement = document.getElementById(item.href.slice(1));
+
     if (targetElement) {
       targetElement.scrollIntoView({ behavior: "smooth" });
-    } else {
-      window.location.assign(item.href);
+      return;
     }
+
+    window.location.assign(item.href);
+  };
+
+  const handleMobileNavClick = (item) => {
+    handleNavClick(item);
+    setMobileMenuOpen(false);
+  };
+
+  const handleAuthClick = (callback) => {
+    callback?.();
+    setMobileMenuOpen(false);
   };
 
   return (
     <>
-      {/* Main Navbar */}
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 dark:bg-slate-950/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 transition-colors duration-300">
-        <div className="container-max">
-          <div className="flex items-center justify-between py-4">
-            {/* Logo */}
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-gradient-to-br from-blue-600 to-cyan-500 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-lg">C</span>
-              </div>
-              <div>
-                <h1 className="font-bold text-xl text-slate-900 dark:text-white">
-                  Career<span className="bg-gradient-to-r from-blue-600 to-cyan-500 bg-clip-text text-transparent">OS</span>
-                </h1>
-              </div>
+      <nav className="sticky inset-x-0 top-0 z-50 border-b border-white/10 bg-slate-950/80 shadow-lg shadow-black/20 backdrop-blur-lg  ">
+        <div className="container-max  ">
+          <div className="flex h-16 items-center justify-between gap-3 ">
+            <button
+              type="button"
+              onClick={() => handleNavClick(navItems[0])}
+              className="flex items-center gap-2 shrink-0"
+              aria-label="Go to home"
+            >
+              <span className="text-xl font-bold text-white">
+                Career
+                <span className="bg-linear-to-r from-blue-600 to-cyan-500 bg-clip-text text-transparent">
+                  OS
+                </span>
+              </span>
+            </button>
+            <div className="hidden md:flex items-center gap-4 lg:gap-6">
+              {navItems.map((item) => (
+                <button
+                  key={item.label}
+                  type="button"
+                  onClick={() => handleNavClick(item)}
+                  className={`rounded-lg px-3 py-2 text-sm font-light transition-colors duration-200 ${
+                    activeLink === item.label
+                      ? "text-cyan-300"
+                      : "text-slate-300 hover:text-cyan-300"
+                  }`}
+                >
+                  {item.label}
+                </button>
+              ))}
             </div>
 
-            {/* Desktop Links */}
-            <div className="hidden lg:flex items-center gap-8">
-              {navItems.map((item, index) => {
-                const Icon = item.icon;
-                return (
-                  <button
-                    key={index}
-                    type="button"
-                    onClick={() => handleNavClick(item)}
-                    className={`flex items-center gap-2 px-3 py-2 rounded-lg font-medium transition-all duration-200 ${
-                      activeLink === item.label
-                        ? "text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-slate-800"
-                        : "text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400"
-                    }`}
-                  >
-                    <Icon size={18} />
-                    {item.label}
-                  </button>
-                );
-              })}
-            </div>
 
-            {/* Right Side */}
-            <div className="flex items-center gap-3">
-              {/* Theme Toggle */}
+            <div className="hidden md:flex items-center gap-3">
               <button
+                className="rounded-full border border-white/15 px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-white/10"
                 type="button"
-                onClick={onToggleTheme}
-                className="p-2 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
-                aria-label="Toggle theme"
+                onClick={onLogin}
               >
-                {darkMode ? <Sun size={20} /> : <Moon size={20} />}
+                Login
               </button>
-
-              {/* Auth Buttons - Desktop */}
-              <div className="hidden sm:flex items-center gap-3">
-                <button
-                  className="btn btn-outline text-sm"
-                  type="button"
-                  onClick={onLogin}
-                >
-                  Login
-                </button>
-                <button
-                  className="btn btn-primary text-sm"
-                  type="button"
-                  onClick={onSignUp}
-                >
-                  Sign Up
-                </button>
-              </div>
-
-              {/* Mobile Menu Button */}
               <button
-                className="lg:hidden p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
-                onClick={() => setMobileMenuOpen(true)}
+                className="btn rounded-full bg-linear-to-r from-blue-600 to-cyan-500 px-5 py-2.5 text-sm font-medium text-white shadow-lg shadow-blue-500/20 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-blue-500/40"
+                type="button"
+                onClick={onSignUp}
               >
-                <Menu size={24} className="text-slate-900 dark:text-white" />
+                Sign up
               </button>
             </div>
+
+            <button
+              type="button"
+              className="inline-flex items-center justify-center rounded-lg border border-white/10 p-2 text-white transition-colors hover:bg-white/10 md:hidden"
+              onClick={() => setMobileMenuOpen((value) => !value)}
+              aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
+              aria-expanded={mobileMenuOpen}
+            >
+              {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
           </div>
         </div>
       </nav>
 
-      {/* Mobile Menu */}
       {mobileMenuOpen && (
-        <div className="fixed inset-0 z-40 lg:hidden">
-          {/* Backdrop */}
-          <div
-            className="absolute inset-0 bg-black/50 transition-opacity"
+        <div className="fixed inset-0 z-40 md:hidden">
+          <button
+            type="button"
+            className="absolute inset-0 bg-black/50"
+            aria-label="Close menu backdrop"
             onClick={() => setMobileMenuOpen(false)}
           />
 
-          {/* Menu Panel */}
-          <div className="absolute top-0 right-0 bottom-0 w-64 bg-white dark:bg-slate-900 shadow-lg overflow-y-auto">
-            <div className="p-4">
-              {/* Close Button */}
-              <button
-                className="mb-6 p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                <X size={24} className="text-slate-900 dark:text-white" />
-              </button>
-
-              {/* Theme Toggle in Mobile */}
-              <div className="mb-6 flex items-center justify-between">
-                <span className="font-semibold text-slate-900 dark:text-white">
-                  {darkMode ? "Dark Mode" : "Light Mode"}
+          <div className="absolute right-0 top-0 h-full w-[86vw] max-w-sm border-l border-white/10 bg-slate-950/95 shadow-2xl shadow-black/30 backdrop-blur-xl">
+            <div className="flex items-center justify-between border-b border-white/10 p-4">
+              <span className="text-lg font-bold text-white">
+                Career
+                <span className="bg-linear-to-r from-blue-600 to-cyan-500 bg-clip-text text-transparent">
+                  OS
                 </span>
-                <button
-                  type="button"
-                  onClick={onToggleTheme}
-                  className="p-2 rounded-lg bg-slate-100 dark:bg-slate-800"
-                >
-                  {darkMode ? <Sun size={18} /> : <Moon size={18} />}
-                </button>
+              </span>
+              <button
+                type="button"
+                className="rounded-lg border border-white/10 p-2 text-white transition-colors hover:bg-white/10"
+                onClick={() => setMobileMenuOpen(false)}
+                aria-label="Close menu"
+              >
+                <X size={22} />
+              </button>
+            </div>
+
+            <div className="flex h-[calc(100%-4rem)] flex-col justify-between p-4">
+              <div className="space-y-2">
+                {navItems.map((item) => (
+                  <button
+                    key={item.label}
+                    type="button"
+                    className={`w-full rounded-xl px-4 py-3 text-left text-base font-medium transition-colors ${
+                      activeLink === item.label
+                        ? "bg-blue-500/15 text-cyan-300"
+                        : "text-slate-200 hover:bg-white/5"
+                    }`}
+                    onClick={() => handleMobileNavClick(item)}
+                  >
+                    {item.label}
+                  </button>
+                ))}
               </div>
 
-              {/* Nav Links */}
-              <div className="space-y-2 mb-6">
-                {navItems.map((item, index) => {
-                  const Icon = item.icon;
-                  return (
-                    <button
-                      key={index}
-                      className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg font-medium transition-all ${
-                        activeLink === item.label
-                          ? "text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-slate-800"
-                          : "text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800"
-                      }`}
-                      onClick={() => {
-                        handleNavClick(item);
-                        setMobileMenuOpen(false);
-                      }}
-                    >
-                      <Icon size={20} />
-                      {item.label}
-                    </button>
-                  );
-                })}
-              </div>
-
-              {/* Auth Buttons - Mobile */}
-              <div className="space-y-3 border-t border-slate-200 dark:border-slate-700 pt-6">
+              <div className="space-y-3 border-t border-white/10 pt-4">
                 <button
-                  className="btn btn-outline w-full text-sm"
+                  className="w-full rounded-xl border border-white/15 px-4 py-3 text-sm font-medium text-white transition-colors hover:bg-white/10"
                   type="button"
-                  onClick={() => {
-                    onLogin?.();
-                    setMobileMenuOpen(false);
-                  }}
+                  onClick={() => handleAuthClick(onLogin)}
                 >
                   Login
                 </button>
                 <button
-                  className="btn btn-primary w-full text-sm"
+                  className="w-full rounded-xl bg-linear-to-r from-blue-600 to-cyan-500 px-4 py-3 text-sm font-medium text-white shadow-lg shadow-blue-500/20 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-blue-500/40"
                   type="button"
-                  onClick={() => {
-                    onSignUp?.();
-                    setMobileMenuOpen(false);
-                  }}
+                  onClick={() => handleAuthClick(onSignUp)}
                 >
-                  Sign Up
+                  Get Started
                 </button>
               </div>
             </div>

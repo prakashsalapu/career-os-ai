@@ -30,43 +30,43 @@ const Feature = () => {
   ];
 
   return (
-    <section id="features" className="section">
+    <section id="features" className="section items-center overflow-hidden bg-slate-950 px-4 py-8 text-white">
       <div className="container-max">
-        <div className="space-y-16">
+        <div>
           {/* Section Header */}
           <div className="text-center space-y-4 max-w-2xl mx-auto">
             <div className="inline-block">
-              <div className="flex items-center gap-2 px-4 py-2 bg-blue-50 dark:bg-slate-800 rounded-full border border-blue-200 dark:border-slate-700">
-                <span className="text-2xl">✦</span>
+              <div className="flex items-center gap-2 px-3 py-1.5  rounded-full border border-white/20">
+                <span className="text-xl">✦</span>
                 <span className="text-sm font-semibold text-blue-600 dark:text-blue-400">
-                  Features to Accelerate Your Career
+                  Features 
                 </span>
               </div>
             </div>
-            <h2 className="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white">
+            <h2 className="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white py-4">
               Everything You Need to <span className="gradient-text">Succeed</span>
             </h2>
-            <p className="text-lg text-slate-600 dark:text-slate-400">
+            <p className="text-md text-slate-400 mb-8">
               Comprehensive tools designed to support every step of your career journey.
             </p>
           </div>
 
           {/* Features Grid */}
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 ">
             {features.map((feature, index) => {
               const Icon = feature.icon;
               return (
                 <div
                   key={index}
-                  className="group card card-hover dark:hover:bg-slate-800/80"
+                  className="group card card-hover border-white/20 transparent"
                 >
                   {/* Icon Container */}
-                  <div className={`inline-flex p-4 bg-gradient-to-br ${feature.gradient} rounded-xl mb-4 text-white shadow-lg group-hover:shadow-xl transition-shadow`}>
+                  <div className={`inline-flex p-2 bg-gradient-to-br ${feature.gradient} rounded-xl mb-4 text-white shadow-lg group-hover:shadow-xl transition-shadow`}>
                     <Icon size={32} />
                   </div>
 
                   {/* Content */}
-                  <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2">
+                  <h3 className="text-xl  text-slate-900 text-white mb-2">
                     {feature.title}
                   </h3>
                   <p className="text-slate-600 dark:text-slate-300">

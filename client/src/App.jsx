@@ -13,14 +13,18 @@ function App() {
     return window.matchMedia('(prefers-color-scheme: dark)').matches;
   });
 
+  const toggleTheme = () => {
+    setDarkMode((value) => !value);
+  };
+
   useEffect(() => {
     document.documentElement.classList.toggle('dark', darkMode);
     localStorage.setItem('careerOS-theme', darkMode ? 'dark' : 'light');
   }, [darkMode]);
 
   return (
-    <div className="min-h-screen bg-white dark:bg-slate-950 text-slate-900 dark:text-white transition-colors duration-300">
-      <Navbar darkMode={darkMode} onToggleTheme={() => setDarkMode((value) => !value)} />
+    <div className="min-h-screen bg-slate-50 text-slate-900 transition-colors duration-300 dark:bg-slate-950 dark:text-white">
+      <Navbar darkMode={darkMode} onToggleTheme={toggleTheme} />
       <Hero />
       <FAQ />
       <Footer />

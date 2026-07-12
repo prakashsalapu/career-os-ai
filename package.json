@@ -2,14 +2,21 @@
   "name": "career-os",
   "version": "1.0.0",
   "description": "Production-level SaaS for career development",
-  "workspaces": ["client", "server"],
+  "workspaces": [
+    "client",
+    "server"
+  ],
   "scripts": {
-    "dev": "concurrently 'npm run dev --workspace=client' 'npm run dev --workspace=server'",
+    "dev": "concurrently \"npm run dev --workspace=client\" \"npm run dev --workspace=server\"",
     "dev:client": "npm run dev --workspace=client",
     "dev:server": "npm run dev --workspace=server",
     "test": "npm test --workspaces",
     "lint": "npm run lint --workspaces",
     "build": "npm run build --workspaces",
     "seed:db": "npm run seed:db --workspace=server"
+  },
+  "dependencies": {
+    "concurrently": "^10.0.3",
+    "framer-motion": "^12.42.2"
   }
 }

@@ -1,0 +1,67 @@
+@reference "../global.css";
+
+@layer base {
+	h1,
+	h2,
+	h3,
+	h4,
+	h5,
+	h6 {
+		@apply font-semibold tracking-tight;
+	}
+
+	::-webkit-scrollbar {
+		@apply w-2;
+	}
+
+	::-webkit-scrollbar-track {
+		@apply bg-slate-100 dark:bg-slate-800;
+	}
+
+	::-webkit-scrollbar-thumb {
+		@apply bg-slate-400 dark:bg-slate-600 rounded-full hover:bg-slate-500 dark:hover:bg-slate-500;
+	}
+}
+
+@layer utilities {
+	.animate-float {
+		animation: float 6s ease-in-out infinite;
+	}
+
+	.animate-hero-fade {
+		animation: heroFadeUp 900ms cubic-bezier(0.16, 1, 0.3, 1) both;
+	}
+
+	.home-grid-overlay {
+		background-image: linear-gradient(rgba(148, 163, 184, 0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(148, 163, 184, 0.08) 1px, transparent 1px);
+		background-size: 80px 80px;
+		mask-image: radial-gradient(circle at center, black, transparent 78%);
+	}
+
+	.home-glow {
+		filter: blur(60px);
+	}
+}
+
+@keyframes float {
+	0%,
+	100% {
+		transform: translateY(0);
+	}
+
+	50% {
+		transform: translateY(-12px);
+	}
+}
+
+@keyframes heroFadeUp {
+	0% {
+		opacity: 0;
+		transform: translateY(24px);
+	}
+
+	100% {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}

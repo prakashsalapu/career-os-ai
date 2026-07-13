@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Menu, X } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
 
 const navItems = [
   { label: "Home", href: "#home" },
@@ -8,9 +9,10 @@ const navItems = [
   { label: "Contact", href: "#contact" },
 ];
 
-const Navbar = ({ onLogin, onSignUp }) => {
+const Navbar = ({ darkMode, onToggleTheme }) => {
   const [activeLink, setActiveLink] = useState("Home");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const navigate = useNavigate();
 
   const handleNavClick = (item) => {
     setActiveLink(item.label);
@@ -20,17 +22,10 @@ const Navbar = ({ onLogin, onSignUp }) => {
       targetElement.scrollIntoView({ behavior: "smooth" });
       return;
     }
-
-    window.location.assign(item.href);
   };
 
   const handleMobileNavClick = (item) => {
     handleNavClick(item);
-    setMobileMenuOpen(false);
-  };
-
-  const handleAuthClick = (callback) => {
-    callback?.();
     setMobileMenuOpen(false);
   };
 
@@ -69,22 +64,19 @@ const Navbar = ({ onLogin, onSignUp }) => {
               ))}
             </div>
 
-
             <div className="hidden md:flex items-center gap-3">
-              <button
-                className="rounded-full border border-white/15 px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-white/10"
-                type="button"
-                onClick={onLogin}
+              <Link
+                to="/login"
+                className="rounded-full border border-white/15 px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-white/10 inline-block"
               >
                 Login
-              </button>
-              <button
-                className="btn rounded-full bg-linear-to-r from-blue-600 to-cyan-500 px-5 py-2.5 text-sm font-medium text-white shadow-lg shadow-blue-500/20 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-blue-500/40"
-                type="button"
-                onClick={onSignUp}
+              </Link>
+              <Link
+                to="/register"
+                className="btn rounded-full bg-linear-to-r from-blue-600 to-cyan-500 px-5 py-2.5 text-sm font-medium text-white shadow-lg shadow-blue-500/20 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-blue-500/40 inline-block"
               >
                 Sign up
-              </button>
+              </Link>
             </div>
 
             <button
@@ -146,20 +138,20 @@ const Navbar = ({ onLogin, onSignUp }) => {
               </div>
 
               <div className="space-y-3 border-t border-white/10 pt-4">
-                <button
-                  className="w-full rounded-xl border border-white/15 px-4 py-3 text-sm font-medium text-white transition-colors hover:bg-white/10"
-                  type="button"
-                  onClick={() => handleAuthClick(onLogin)}
+                <Link
+                  to="/login"
+                  className="block w-full text-center rounded-xl border border-white/15 px-4 py-3 text-sm font-medium text-white transition-colors hover:bg-white/10"
+                  onClick={() => setMobileMenuOpen(false)}
                 >
                   Login
-                </button>
-                <button
-                  className="w-full rounded-xl bg-linear-to-r from-blue-600 to-cyan-500 px-4 py-3 text-sm font-medium text-white shadow-lg shadow-blue-500/20 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-blue-500/40"
-                  type="button"
-                  onClick={() => handleAuthClick(onSignUp)}
+                </Link>
+                <Link
+                  to="/register"
+                  className="block w-full text-center rounded-xl bg-linear-to-r from-blue-600 to-cyan-500 px-4 py-3 text-sm font-medium text-white shadow-lg shadow-blue-500/20 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-blue-500/40"
+                  onClick={() => setMobileMenuOpen(false)}
                 >
                   Get Started
-                </button>
+                </Link>
               </div>
             </div>
           </div>

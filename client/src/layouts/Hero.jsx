@@ -1,6 +1,7 @@
 import React from "react";
 import Feature from "./Feature";
 import { ArrowRight, Sparkles } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const trustAvatars = [1, 2, 3, 4];
 
@@ -33,10 +34,10 @@ const Hero = () => {
             </div>
 
             <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
-              <button className="group inline-flex items-center gap-2 rounded-xl bg-linear-to-r from-blue-600 to-cyan-500 px-6 py-3.5 text-sm font-semibold text-white shadow-[0_18px_50px_rgba(37,99,235,0.35)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_22px_60px_rgba(37,99,235,0.45)]">
+              <Link to="/register" className="group inline-flex items-center gap-2 rounded-xl bg-linear-to-r from-blue-600 to-cyan-500 px-6 py-3.5 text-sm font-semibold text-white shadow-[0_18px_50px_rgba(37,99,235,0.35)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_22px_60px_rgba(37,99,235,0.45)]">
                 Get Started
                 <ArrowRight size={18} className="transition-transform duration-300 group-hover:translate-x-1" />
-              </button>
+              </Link>
               <button className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-6 py-3.5 text-sm font-semibold text-white/90 backdrop-blur-xl transition-all duration-300 hover:-translate-y-0.5 hover:border-white/20 hover:bg-white/10 hover:text-white">
                 Explore Features
               </button>

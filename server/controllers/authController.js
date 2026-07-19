@@ -111,7 +111,7 @@ const forgotPassword = async (req, res) => {
     await user.save({ validateBeforeSave: false });
 
     // Assuming client runs on 5173
-    const resetUrl = `http://localhost:5173/reset-password/${resetToken}`;
+    const resetUrl = `${process.env.CLIENT_URL || 'http://localhost:5173'}/reset-password/${resetToken}`;
     const message = `You are receiving this email because you (or someone else) has requested the reset of a password. Please make a PUT request to: \n\n ${resetUrl}`;
 
     try {
@@ -123,6 +123,7 @@ const forgotPassword = async (req, res) => {
 
       res.status(200).json({ message: 'Email sent' });
     } catch (err) {
+      console.error('Email sending error:', err);
       user.resetPasswordToken = undefined;
       user.resetPasswordExpire = undefined;
       await user.save({ validateBeforeSave: false });
@@ -176,7 +177,7 @@ const verifyEmail = async (req, res) => {
     user.emailVerificationToken = undefined;
     await user.save();
 
-    res.redirect('http://localhost:5173/dashboard');
+    res.redirect(`${process.env.CLIENT_URL || 'http://localhost:5173'}/dashboard`);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -184,7 +185,7 @@ const verifyEmail = async (req, res) => {
 
 const googleCallback = (req, res) => {
   const token = generateToken(req.user._id);
-  res.redirect(`http://localhost:5173/dashboard?token=${token}`);
+  res.redirect(`${process.env.CLIENT_URL || 'http://localhost:5173'}/dashboard?token=${token}`);
 };
 
 module.exports = {

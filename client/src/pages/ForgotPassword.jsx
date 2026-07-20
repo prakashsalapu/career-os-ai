@@ -3,12 +3,21 @@ import { Link } from 'react-router-dom';
 import AuthLayout from '../layouts/AuthLayout';
 import { Mail, Loader, CheckCircle } from 'lucide-react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const ForgotPassword = () => {
+  const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
+
+  const [otpSent, setOtpSent] = useState(false);
+  const [otp, setOtp] = useState(['', '', '', '', '', '']);
+  const [otpVerified, setOtpVerified] = useState(false);
+
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -18,13 +27,52 @@ const ForgotPassword = () => {
 
     try {
       await axios.post('/api/auth/forgotpassword', { email });
-      setMessage('Password reset email sent! Please check your inbox.');
+      setOtpSent(true);
+      setMessage("OTP sent to your email.");
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to send reset email');
+      setError(err.response?.data?.message || 'Failed to verify OTP');
     } finally {
       setIsSubmitting(false);
     }
   };
+  const handleOtpChange = async (index, value) => {
+  if (!/^[0-9]?$/.test(value)) return;
+
+  const newOtp = [...otp];
+  newOtp[index] = value;
+  setOtp(newOtp);
+
+  // Auto focus next input
+  if (value && index < 5) {
+    document.getElementById(`otp-${index + 1}`)?.focus();
+  }
+
+  // Verify automatically after 6 digits
+  if (newOtp.join("").length === 6) {
+    try {
+      await axios.post("/api/auth/verify-otp", {
+        email,
+        otp: newOtp.join("")
+      });
+
+      setOtpVerified(true);
+      setMessage("OTP Verified Successfully");
+      setError("");
+
+      navigate('/reset-password', {
+        state: {
+          email,
+          otp: newOtp.join("")
+         }
+      });
+
+    } catch (err) {
+      setError("Invalid OTP");
+      setOtp(['', '', '', '', '', '']);
+      document.getElementById("otp-0")?.focus();
+    }
+  }
+};
 
   return (
     <AuthLayout>
@@ -54,13 +102,37 @@ const ForgotPassword = () => {
           <Mail size={16} className="absolute right-4 top-1/2 -translate-y-1/2 text-emerald-500" />
         </div>
 
-        <button 
+        {/* otp */}
+        {otpSent && !otpVerified && (
+          <div className="mt-6">
+            <p className="text-center text-sm mb-4">
+              Enter the 6-digit OTP sent to your email
+            </p>
+
+            <div className="flex justify-center gap-2">
+            {otp.map((digit, index) => (
+              <input
+                id={`otp-${index}`}
+                key={index}
+                type="text"
+                inputMode="numeric"
+                maxLength="1"
+                value={digit}
+                onChange={(e) => handleOtpChange(index, e.target.value)}
+                className="w-12 h-12 text-center border rounded-lg text-xl font-bold text-slate-900 bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              />
+            ))}
+          </div>
+        </div>
+      )}
+      <button 
           type="submit" 
           disabled={isSubmitting}
           className="w-full py-3.5 bg-[#0B0F19] hover:bg-slate-800 text-white rounded-xl text-sm font-semibold transition-all shadow-lg shadow-slate-900/10 flex justify-center items-center"
         >
-          {isSubmitting ? <Loader className="animate-spin" size={18} /> : 'Send reset email'}
+          {isSubmitting ? <Loader className="animate-spin" size={18} /> : otpSent ? 'Resend OTP' : 'Send OTP'}
         </button>
+
       </form>
 
       <p className="text-center mt-8 text-sm text-slate-500">

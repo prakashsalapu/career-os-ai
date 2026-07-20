@@ -14,6 +14,13 @@ const userSchema = new mongoose.Schema({
   password: {
     type: String,
   },
+  resetPasswordOTP: {
+  type: String,
+},
+
+resetPasswordOTPExpire: {
+  type: Date,
+},
   googleId: {
     type: String,
   },
@@ -30,8 +37,8 @@ const userSchema = new mongoose.Schema({
     default: false,
   },
   emailVerificationToken: String,
-  resetPasswordToken: String,
-  resetPasswordExpire: Date,
+  resetPasswordOTP: String,
+  resetPasswordOTPExpire: Date,
 }, { timestamps: true });
 
 userSchema.pre('save', async function() {

@@ -1,16 +1,17 @@
 import React, { useState } from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import AuthLayout from '../layouts/AuthLayout';
 import { Loader, Lock } from 'lucide-react';
 import axios from 'axios';
-import { useAuth } from '../contexts/AuthContext';
+import { useLocation } from "react-router-dom";
 
 const ResetPassword = () => {
+  const location = useLocation();
+  const { email, otp } = location.state || {};
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState('');
-  const { token } = useParams();
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -25,11 +26,9 @@ const ResetPassword = () => {
     }
 
     try {
-      const res = await axios.put(`/api/auth/resetpassword/${token}`, { password });
-      // If successful, we could log them in automatically since the backend returns a token,
-      // but redirecting to login is standard
-      localStorage.setItem('token', res.data.token); // Autologin optional
-      window.location.href = '/dashboard';
+      await axios.post('/api/auth/resetpassword', { email, otp, password });
+      alert("Password Reset Successfully");
+      navigate("/login");
     } catch (err) {
       setError(err.response?.data?.message || 'Failed to reset password');
     } finally {
@@ -47,6 +46,7 @@ const ResetPassword = () => {
       {error && <div className="mb-4 p-3 bg-red-50 text-red-600 rounded-lg text-sm">{error}</div>}
 
       <form onSubmit={handleSubmit} className="space-y-6">
+
         <div className="relative">
           <input 
             type="password" 
@@ -65,7 +65,7 @@ const ResetPassword = () => {
             placeholder="Confirm New Password" 
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
-            className="w-full px-4 py-3.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all placeholder:text-slate-400"
+            className="w-full px-4 py-3.5 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all placeholder:text-slate-400"
             required
           />
           <Lock size={16} className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400" />

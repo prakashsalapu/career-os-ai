@@ -7,6 +7,7 @@ const {
   getMe, 
   googleCallback,
   forgotPassword,
+  verifyOTP,
   resetPassword,
   verifyEmail 
 } = require('../controllers/authController');
@@ -19,7 +20,8 @@ router.post('/login', loginUser);
 router.get('/me', protect, getMe);
 
 router.post('/forgotpassword', forgotPassword);
-router.put('/resetpassword/:resettoken', resetPassword);
+router.post("/verify-otp", verifyOTP);
+router.post('/resetpassword', resetPassword);
 router.get('/verifyemail/:verifytoken', verifyEmail);
 
 // Google OAuth Routes

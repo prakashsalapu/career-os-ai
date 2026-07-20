@@ -99,67 +99,107 @@ const getMe = async (req, res) => {
   }
 };
 
-// Forgot Password
 const forgotPassword = async (req, res) => {
   try {
     const user = await User.findOne({ email: req.body.email });
+
     if (!user) {
-      return res.status(404).json({ message: 'There is no user with that email' });
+      return res.status(404).json({
+        message: "User not found",
+      });
     }
 
-    const resetToken = user.getResetPasswordToken();
+    // Generate 6-digit OTP
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+
+    // Save OTP
+    user.resetPasswordOTP = otp;
+    user.resetPasswordOTPExpire = Date.now() + 10 * 60 * 1000; // 10 mins
+
     await user.save({ validateBeforeSave: false });
 
-    // Assuming client runs on 5173
-    const resetUrl = `${process.env.CLIENT_URL || 'http://localhost:5173'}/reset-password/${resetToken}`;
-    const message = `You are receiving this email because you (or someone else) has requested the reset of a password. Please make a PUT request to: \n\n ${resetUrl}`;
+    const message = `Your CareerOS Password Reset OTP is: ${otp}
 
-    try {
-      await sendEmail({
-        email: user.email,
-        subject: 'Password reset token',
-        message,
-      });
+This OTP is valid for 10 minutes.`;
 
-      res.status(200).json({ message: 'Email sent' });
-    } catch (err) {
-      console.error('Email sending error:', err);
-      user.resetPasswordToken = undefined;
-      user.resetPasswordExpire = undefined;
-      await user.save({ validateBeforeSave: false });
-      return res.status(500).json({ message: 'Email could not be sent' });
-    }
+    await sendEmail({
+      email: user.email,
+      subject: "CareerOS Password Reset OTP",
+      message,
+    });
+
+    res.status(200).json({
+      message: "OTP sent successfully",
+    });
+
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    console.error(error);
+    res.status(500).json({
+      message: error.message,
+    });
   }
 };
 
-// Reset Password
-const resetPassword = async (req, res) => {
+//verify OTP
+const verifyOTP = async (req, res) => {
   try {
-    const resetPasswordToken = crypto.createHash('sha256').update(req.params.resettoken).digest('hex');
+    const { email, otp } = req.body;
+
     const user = await User.findOne({
-      resetPasswordToken,
-      resetPasswordExpire: { $gt: Date.now() }
+      email,
+      resetPasswordOTP: otp,
+      resetPasswordOTPExpire: { $gt: Date.now() },
     });
 
     if (!user) {
-      return res.status(400).json({ message: 'Invalid token' });
+      return res.status(400).json({
+        message: "Invalid or Expired OTP",
+      });
     }
 
-    user.password = req.body.password;
-    user.resetPasswordToken = undefined;
-    user.resetPasswordExpire = undefined;
+    res.status(200).json({
+      message: "OTP Verified Successfully",
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+
+const resetPassword = async (req, res) => {
+  try {
+    const { email, otp, password } = req.body;
+
+    const user = await User.findOne({
+      email,
+      resetPasswordOTP: otp,
+      resetPasswordOTPExpire: { $gt: Date.now() }
+    });
+
+    if (!user) {
+      return res.status(400).json({
+        message: "Invalid or Expired OTP"
+      });
+    }
+
+    user.password = password;
+
+    // Clear OTP after successful reset
+    user.resetPasswordOTP = undefined;
+    user.resetPasswordOTPExpire = undefined;
+
     await user.save();
 
     res.status(200).json({
-      _id: user._id,
-      name: user.name,
-      email: user.email,
-      token: generateToken(user._id),
+      message: "Password Reset Successful"
     });
+
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({
+      message: error.message
+    });
   }
 };
 
@@ -194,6 +234,7 @@ module.exports = {
   getMe,
   googleCallback,
   forgotPassword,
+  verifyOTP,
   resetPassword,
   verifyEmail
 };

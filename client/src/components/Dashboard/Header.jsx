@@ -1,8 +1,10 @@
 import React from 'react';
-import { Search, Bell, Sun, Calendar, Plus, Menu } from 'lucide-react';
+// import { Search, Bell, Sun, Calendar, Plus, Menu } from 'lucide-react';
+import { Search, Bell, Menu, X } from "lucide-react";
 import { useAuth } from '../../contexts/AuthContext';
 
-const Header = () => {
+// const Header = () => {
+  const Header = ({ sidebarOpen, setSidebarOpen }) => {
   const { user } = useAuth();
   
   const userName = user?.name || 'Guest User';
@@ -12,10 +14,13 @@ const Header = () => {
 
   return (
     <header className="h-20 border-b border-[#1e293b] bg-[#0B0F19]/80 backdrop-blur-md sticky top-0 z-30 flex items-center justify-between px-4 lg:px-8">
-      {/* Mobile Menu Button */}
-      <button className="lg:hidden p-2 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800">
-        <Menu size={24} />
-      </button>
+      
+      <button
+  onClick={() => setSidebarOpen(!sidebarOpen)}
+  className="lg:hidden p-2 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800"
+>
+  {sidebarOpen ? <X size={24} /> : <Menu size={24} />}
+</button>
 
       {/* Search Bar - Hidden on small screens */}
       <div className="hidden md:flex items-center flex-1 max-w-md relative">
